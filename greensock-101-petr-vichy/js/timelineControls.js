@@ -1,21 +1,6 @@
-const runStart = () => {
-  console.log('onStart')
-}
-
-const runUpdate = () => {
-  console.log('onUpdate')
-}
-
-const runComplete = () => {
-  console.log('onComplete')
-}
-
 const timeline = gsap.timeline({
   duration: 1,
   paused: true,
-  onStart: runStart,
-  onUpdate: runUpdate,
-  onComplete: runComplete,
 })
 
 timeline
