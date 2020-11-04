@@ -252,3 +252,147 @@ gsap.fromTo(
 **The above exercises can be done much cleaner and more editable with the use of...**
 
 ## Timelines
+
+- you can declare it as a variable
+- `const timeline = gsap.timeline`
+- there are two ways that you can use Timelines
+
+### timeline.add() method
+
+- store each tween as a variable then add them to the method
+
+```js
+const timeline = gsap.timeline()
+
+const tween1 = gsap.from('body', {
+  backgroundColor: '#fff',
+  duration: 1.7,
+  ease: 'none',
+})
+
+timeline.add(tween1)
+```
+
+### chain tweens to the timeline
+
+But the more simple (& preffered) way is
+
+```js
+const timeline = gsap
+  .timeline()
+
+  .from('body', {
+    backgroundColor: '#fff',
+    duration: 1.7,
+    ease: 'none',
+  })
+  .fromTo(
+    ['h1', '.intro'],
+    {
+      y: -20,
+      opacity: 0,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power1.out',
+      stagger: 0.2,
+    }
+  )
+  .from(['img', 'h2'], {
+    opacity: 0,
+    duration: 0.7,
+    ease: 'none',
+  })
+  .fromTo(
+    'ul li',
+    {
+      y: -20,
+      opacity: 0,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power2.out',
+      stagger: 0.2,
+    }
+  )
+```
+
+- the delays have been removed
+- delays are not useful anymore, unless you want to create a gap between tweens
+
+### Overlap tweens
+
+```js
+  .fromTo(
+    ['h1', '.intro'],
+    {
+      y: -20,
+      opacity: 0,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power1.out',
+      stagger: 0.2,
+    },
+    '-=1' // this brings the tween forward by 1 second - it will now overlap with the previous
+  )
+
+// position parameter (controls placement)
+tl.to(target, {toVars}, positionParameter);
+
+0.7 // exactly 0.7 seconds into the timeline (absolute)
+"-=0.7" // overlap with previous by 0.7 sec
+"+=0.7" // delay start 0.7 sec after previous finishes
+"myLabel" // insert at "myLabel" position
+"myLabel+=0.2" // 0.2 seconds after "myLabel"
+"<" // align with start of most recently-added child
+"<0.2" // 0.2 seconds after ^^
+
+```
+
+- tweens with the same label will start at the same time
+
+## Timeline contols
+
+- see `/js/timeLineControls.js
+- GSAP cheatsheet
+
+## Timeline callbacks
+
+- we can fire off specific events (can be not related the the animation) when the animation starts
+- we can see the progress of the animation on update
+- we can fire something off at the end when the animation finishes
+- **this applies to tweens as well as timelines**
+
+```js
+const runStart = () => {
+  console.log('onStart')
+}
+
+const runUpdate = () => {
+  console.log('onUpdate')
+}
+
+const runComplete = () => {
+  console.log('onComplete')
+}
+
+const timeline = gsap.timeline({
+  duration: 1,
+  paused: true,
+  onStart: runStart,
+  onUpdate: runUpdate,
+  onComplete: runComplete,
+})
+
+// returns
+//  onStart
+// (337) onUpdate //  is good for progress bars!
+//  onComplete
+```
